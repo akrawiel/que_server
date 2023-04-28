@@ -1,0 +1,29 @@
+<div class="w-full h-full flex flex-col p-4 gap-2">
+  <h1>Chatting in <strong><%= @room_id %></strong> as <strong><%= @username %></strong></h1>
+
+  <div
+    id="chat"
+    class="grow grid grid-cols-[200px_minmax(0,1fr)] grid-rows-[minmax(0,1fr)_min-content] w-full gap-2"
+  >
+    <div id="chat-presence" class="p-2 border">
+      <h1>Users online:</h1>
+      <%= for user <- @user_list do %>
+        <div><%= user %></div>
+      <% end %>
+    </div>
+    <div id="chat-messages" class="border flex flex-col gap-2 p-2" phx-update="append">
+      <%= for message <- @messages do %>
+        <.message message={message} />
+      <% end %>
+    </div>
+    <.form
+      for={@form}
+      phx-submit="submit_message"
+      phx-change="form_updated"
+      class="border col-start-1 col-end-[-1] p-2 flex flex-row gap-2"
+    >
+      <%= text_input(@form, :message, value: @message, class: "grow border-0 focus:ring-0") %>
+      <%= submit("Send", class: "bg-green-500 text-white px-2 h-full") %>
+    </.form>
+  </div>
+</div>
